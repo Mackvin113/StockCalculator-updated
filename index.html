@@ -6,19 +6,24 @@
     </head>
     <body>
         <div class="container">
-          <div><h1>Investment Calculator</h1></div>
+          <div><h1>Stock Prediction Calculator for Investment
+          </h1></div>
              <div class="invest">
                 <ol>
                     <li>Invested Amount</li>
                         <input class="form-control" id="investedAmount" type="text" placeholder="Enter Amount">
                         <li>Stock Price on Investment</li>
                         <input class="form-control" id="stockPrice" type="text" placeholder="Enter Stock Price">
+                        <li>Quantity "(Number of stock)"</li>
                         <input class="form-control" id="quantity" type="text" placeholder="Enter Quantity">
-                        <li>Running Price</li>
+                        <li>Running Price "(Or Prediction Price)"</li>
                         <input class="form-control" id="runningPrice" type="text" placeholder="Enter Running Price">
                         <button class="btn btn-primary" id="calculateBtn">Calculate</button>
                         <li>P&L Amount</li>
+                        <div class="result-con">
+                        <input class="result" id="overall" type="text" placeholder="Overall" readonly>
                         <input class="result" id="plAmount" type="text" placeholder="P&L Amount" readonly>
+                        </div>
                     </ol>
                 </div>
         </div>
