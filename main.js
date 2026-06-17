@@ -48,23 +48,31 @@ attachCurrencyField('stockPrice');
 attachCurrencyField('runningPrice');
 
 document.getElementById('calculateBtn').addEventListener('click', function () {
-  const investedAmount = stripNumber(document.getElementById('investedAmount').value);
-  const runningPrice   = stripNumber(document.getElementById('runningPrice').value);
-  const plInput        = document.getElementById('plAmount');
+  const investedAmount  = stripNumber(document.getElementById('investedAmount').value);
+  const runningPrice    = stripNumber(document.getElementById('runningPrice').value);
+  const overallInput    = document.getElementById('overall');
+  const plInput         = document.getElementById('plAmount');
 
   if (!qty || !runningPrice) {
     alert('Please fill in all fields first.');
     return;
   }
 
-  const pl = qty * runningPrice;
-  plInput.value = formatCurrency(pl);
+  // Overall = Quantity × Running Price
+  const overall = qty * runningPrice;
+  overallInput.value = formatCurrency(overall);
 
-  if (pl < investedAmount) {
+  // P&L = Invested - Overall
+  const pl = overall - investedAmount;
+
+  if (pl < 0) {
+    plInput.value = `- ${formatCurrency(Math.abs(pl))}`;
     plInput.style.color = '#e53935';
     plInput.style.fontWeight = '600';
   } else {
+    plInput.value = `+ ${formatCurrency(pl)}`;
     plInput.style.color = '#2e7d32';
     plInput.style.fontWeight = '600';
   }
 });
+
