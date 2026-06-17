@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Stock Calculator</title>
+        <link rel="stylesheet" href="./style.css">
+    </head>
+    <body>
+        <div class="container">
+          <div><h1>Investment Calculator</h1></div>
+             <div class="invest">
+                <ol>
+                    <li>Invested Amount</li>
+                        <input class="form-control" id="investedAmount" type="text" placeholder="Enter Amount">
+                        <li>Stock Price on Investment</li>
+                        <input class="form-control" id="stockPrice" type="text" placeholder="Enter Stock Price">
+                        <input class="form-control" id="quantity" type="text" placeholder="Enter Quantity">
+                        <li>Running Price</li>
+                        <input class="form-control" id="runningPrice" type="text" placeholder="Enter Running Price">
+                        <button class="btn btn-primary" id="calculateBtn">Calculate</button>
+                        <li>P&L Amount</li>
+                        <input class="result" id="plAmount" type="text" placeholder="P&L Amount" readonly>
+                    </ol>
+                </div>
+        </div>
+        <script src="./main.js"></script>
+    </body>
+</html>
+
