@@ -1,4 +1,5 @@
 .container {
+
     max-width: 650px;
     margin: 0 auto;
     padding: 20px;
@@ -86,7 +87,7 @@ button:active {
 .result {
     margin-top: 20px;
     padding: 10px;
-    width: 270px;
+    width: 282px;
     background-color: #f3e8ef;
     color: #0e0d0d;
     font-size: 18px;
@@ -101,8 +102,12 @@ button:active {
 .result-con {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    width: 50px;
-    
+    gap: 5px;
+    width: 100%x;
+}
 
+#overall {
+    grid-column: span 2;
+    width: 589px;
+        
 }
