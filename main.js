@@ -10,7 +10,8 @@ function formatCurrency(value) {
 }
 
 function stripNumber(value) {
-  return parseFloat(value.toString().replace(/[^0-9.]/g, '')) || 0;
+  if (!value) return 0;
+  return parseFloat(value.toString().replace(/[₹,\s]/g, '')) || 0;
 }
 
 function calcQuantity() {
@@ -21,24 +22,23 @@ function calcQuantity() {
     qty = amt / price;
     document.getElementById('quantity').value = qty.toFixed(4);
   } else {
-    qty = 0;
-    document.getElementById('quantity').value = '';
+    const manualQty = stripNumber(document.getElementById('quantity').value);
+    if (manualQty > 0) qty = manualQty;
   }
 }
 
 function attachCurrencyField(id) {
   const el = document.getElementById(id);
+  if (!el) return;
 
   el.addEventListener('focus', function () {
     const raw = stripNumber(this.value);
-    this.value = raw || '';
+    this.value = raw ? raw : '';
   });
 
   el.addEventListener('blur', function () {
     const val = stripNumber(this.value);
-    if (val) {
-      this.value = formatCurrency(val);
-    }
+    if (val) this.value = formatCurrency(val);
     calcQuantity();
   });
 }
@@ -47,14 +47,24 @@ attachCurrencyField('investedAmount');
 attachCurrencyField('stockPrice');
 attachCurrencyField('runningPrice');
 
+document.getElementById('quantity').addEventListener('input', function () {
+  const manualQty = stripNumber(this.value);
+  if (manualQty > 0) qty = manualQty;
+});
+
 document.getElementById('calculateBtn').addEventListener('click', function () {
-  const investedAmount  = stripNumber(document.getElementById('investedAmount').value);
-  const runningPrice    = stripNumber(document.getElementById('runningPrice').value);
-  const overallInput    = document.getElementById('overall');
-  const plInput         = document.getElementById('plAmount');
+  const investedAmount = stripNumber(document.getElementById('investedAmount').value);
+  const stockPrice     = stripNumber(document.getElementById('stockPrice').value);
+  const runningPrice   = stripNumber(document.getElementById('runningPrice').value);
+  const overallInput   = document.getElementById('overall');
+  const plInput        = document.getElementById('plAmount');
+  const diffInput      = document.getElementById('diff');
+
+  const manualQty = stripNumber(document.getElementById('quantity').value);
+  if (manualQty > 0) qty = manualQty;
 
   if (!qty || !runningPrice) {
-    alert('Please fill in all fields first.');
+    alert('Please fill in Quantity and Running Price first.');
     return;
   }
 
@@ -62,17 +72,19 @@ document.getElementById('calculateBtn').addEventListener('click', function () {
   const overall = qty * runningPrice;
   overallInput.value = formatCurrency(overall);
 
-  // P&L = Invested - Overall
+  // P&L = Overall - Invested
   const pl = overall - investedAmount;
+  plInput.value = pl < 0
+    ? `- ${formatCurrency(Math.abs(pl))}`
+    : `+ ${formatCurrency(pl)}`;
+  plInput.style.color      = pl < 0 ? '#e53935' : '#2e7d32';
+  plInput.style.fontWeight = '600';
 
-  if (pl < 0) {
-    plInput.value = `- ${formatCurrency(Math.abs(pl))}`;
-    plInput.style.color = '#e53935';
-    plInput.style.fontWeight = '600';
-  } else {
-    plInput.value = `+ ${formatCurrency(pl)}`;
-    plInput.style.color = '#2e7d32';
-    plInput.style.fontWeight = '600';
-  }
+  // Diff = Stock Price on Investment - Running Price
+  const diff = runningPrice - stockPrice;
+  diffInput.value = diff < 0
+    ? `- ${formatCurrency(Math.abs(diff))}`
+    : `+ ${formatCurrency(diff)}`;
+  diffInput.style.color      = diff < 0 ? '#e53935' : '#2e7d32';
+  diffInput.style.fontWeight = '600';
 });
-
